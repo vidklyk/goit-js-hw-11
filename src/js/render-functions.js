@@ -1,3 +1,6 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 export const createGalleryCardTemplate = imgInfo => {
   return `
     <li class="gallery-card">
@@ -11,4 +14,14 @@ export const createGalleryCardTemplate = imgInfo => {
         <p><b>Downloads</b> ${imgInfo.downloads}</p>
       </div>
     </li>`;
+};
+
+export const initializeLightbox = () => {
+  return new SimpleLightbox('.gallery a', {
+    captions: true,
+    captionsData: 'alt',
+    captionPosition: 'bottom',
+    captionDelay: 250,
+    scrollZoom: false,
+  });
 };

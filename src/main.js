@@ -1,7 +1,8 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
-import { fetchImages } from '../js/pixabay-api';
-import { createGalleryCardTemplate } from '../js/render-functions';
+import { fetchImages } from './js/pixabay-api';
+import {
+  createGalleryCardTemplate,
+  initializeLightbox,
+} from './js/render-functions';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -18,10 +19,6 @@ function showLoader() {
 function hideLoader() {
   loaderEl.classList.add('is-hidden');
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  hideLoader();
-});
 
 const onSearchFormSubmit = event => {
   event.preventDefault();
@@ -51,13 +48,7 @@ const onSearchFormSubmit = event => {
       galleryEl.innerHTML = markup;
 
       if (!lightbox) {
-        lightbox = new SimpleLightbox('.gallery a', {
-          captions: true,
-          captionsData: 'alt',
-          captionPosition: 'bottom',
-          captionDelay: 250,
-          scrollZoom: false,
-        });
+        lightbox = initializeLightbox();
       } else {
         lightbox.refresh();
       }
@@ -68,11 +59,7 @@ const onSearchFormSubmit = event => {
       });
     })
     .catch(error => {
-      console.error('Помилка запиту:', error);
-      iziToast.show({
-        color: 'red',
-        message: `Error loading images. Please try again later.`,
-      });
+      console.error(error);
     })
     .finally(() => {
       hideLoader();
@@ -80,3 +67,6 @@ const onSearchFormSubmit = event => {
 };
 
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
+document.addEventListener('DOMContentLoaded', () => {
+  hideLoader();
+});
